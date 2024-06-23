@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    
+    <h1 class="title fs-15 py-4" >{{ blog.title }}</h1>
+    <div>
+        {{ blog.content|safe }}
+    </div>
+</div>
+<section id="comments">
+    <div class="container">
+        <h1 class="py-3 pt-5">Comments</h1>
+        
+        <form action="{% url 'comment' %}" method="post"> 
+          {% csrf_token %}
+          <input type="text" value="{{blog.id}}" hidden name="blogid" >
+          <textarea name="comment" id="" cols=100 rows=5></textarea>
+          <br>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+        <br>
+        <br>
+        {% for comments in comment %}
+        <div class="card w-75 mb-3">
+            <div class="card-body">
+              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+              </svg> <strong>{{comments.name}}</strong>
+              <p class="card-text mt-3">{{comments.comment}}</p>
+              <p class="d-inline-flex gap-1">
+                <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  Reply
+                </a>
+              </p>
+              <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                  <form action="">
+                    <textarea name="" id="" cols=100 rows=3></textarea>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                  </form>
+                  Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          {% endfor %}
+          
+    </div>
+</section>
+
+{% endblock %}
+
